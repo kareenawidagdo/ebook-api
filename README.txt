@@ -1,4 +1,4 @@
-Tugas 1 KK4-B
+Tugas KK4-B
 Project Laravel "ebook"
 
 Nama      : Kareena Widagdo
