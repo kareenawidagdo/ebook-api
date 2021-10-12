@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
 
@@ -26,6 +27,15 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 // Route::put('books/{id}', [BookController::class, 'update']);
 // Route::delete('books/{id}', [BookController::class, 'destroy']);
 
-Route::resource('books', BookController::class)->except('create','edit');
+// Public Routes
+Route::post('login', [AuthController::class, 'login']);
+Route::post('register', [AuthController::class, 'register']); 
+Route::resource('books', BookController::class)->except('create','edit','store','update','delete');
+Route::resource('authors', AuthorController::class)->except('create','edit','store','update','delete');
 
-Route::resource('authors', AuthorController::class)->except('create','edit');
+// Private Routes
+Route::middleware('auth:sanctum')->group(function() {
+    Route::resource('books', BookController::class)->except('create','edit','show','index');
+    Route::resource('authors', AuthorController::class)->except('create','edit','show','index');
+    Route::post('logout', [AuthController::class, 'logout']);
+});
